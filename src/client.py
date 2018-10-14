@@ -2,7 +2,8 @@ import requests
 import asyncio
 import os
 import pandas as pd
-
+import base64
+import json
 
 from collections import Counter
 
@@ -14,9 +15,15 @@ url = 'http://localhost:{}'.format(SERVER_PORT)
 execution_time = list()
 execution_results = list()
 async def submit_image(filename):
-    files = {'file': open('unknown/{}'.format(filename), 'rb')}
-    response = requests.post(url, files=files)
+    with open('unknown/{}'.format(filename), 'rb') as image_file:
+        encoded_image = base64.b64encode(image_file.read())
+
+    headers = {'Content-Type':'application/json'}
+    data = {'identity': encoded_image.decode('utf-8'), 'client': 'client1', 'filename': filename}
+    response = requests.post(url, data=json.dumps(data), headers=headers)
+
     assert response.status_code, 200
+
     execution_time.append(response.elapsed.total_seconds())
     execution_results.append(response.text)
 
