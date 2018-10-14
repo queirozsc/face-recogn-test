@@ -46,7 +46,6 @@ def timeit(method):
 
 
 class ImageDetectionResource(object):
-    @timeit
     def on_post(self, req, resp):
         """
         Get some info from json request, transform base64 into image
