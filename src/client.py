@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import base64
 import json
+import random
 
 from collections import Counter
 
@@ -12,6 +13,8 @@ SERVER_PORT = os.getenv('SERVER_PORT', 5000)
 
 url = 'http://localhost:{}'.format(SERVER_PORT)
 
+clients = ('client1','client2','client3','client4','client5')
+
 execution_time = list()
 execution_results = list()
 async def submit_image(filename):
@@ -19,7 +22,7 @@ async def submit_image(filename):
         encoded_image = base64.b64encode(image_file.read())
 
     headers = {'Content-Type':'application/json'}
-    data = {'identity': encoded_image.decode('utf-8'), 'client': 'client1', 'filename': filename}
+    data = {'identity': encoded_image.decode('utf-8'), 'client': random.choice(clients), 'filename': filename}
     response = requests.post(url, data=json.dumps(data), headers=headers)
 
     assert response.status_code, 200
