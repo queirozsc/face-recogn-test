@@ -56,4 +56,4 @@ RUN easy_install3 pip wheel && \
 ADD src /usr/src/code/
 WORKDIR /usr/src/code
 
-CMD ["gunicorn","app_falcon:app","-c","gunicorn.py","--log-config","logging.conf"]
+CMD ["gunicorn","app_falcon:app","-c","gunicorn.py"]
