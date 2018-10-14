@@ -1,16 +1,18 @@
 import base64
 import logging
 import time
-import falcon
 import json
-import face_recognition
 import os
+
+import falcon
+import face_recognition
 
 
 from wsgiref import simple_server
 from io import BytesIO
-from falcon_multipart.middleware import MultipartMiddleware
 
+
+from storage import s3_client as storage
 
 server_port = os.getenv('SERVER_PORT', 5000)
 
@@ -64,12 +66,13 @@ class ImageDetectionResource(object):
             else:
                 resp.body = ("Face not Recognized")
 
+        self.save_to_storage(image, filename, req)
         resp.status = falcon.HTTP_200
 
     @timeit
     def base64toimage(self, encoded, req):
         """
-        Convert base64string into img.
+        Convert base64string into bytes like img.
         """
         base = base64.b64decode(encoded)
         
@@ -87,7 +90,14 @@ class ImageDetectionResource(object):
         comp = face_recognition.compare_faces([biden_encoding], unknown_encoding[0])
         return comp
 
-app = falcon.API(middleware=[MultipartMiddleware()])
+    @timeit
+    def save_to_storage(self, image, filename, req):
+        """
+        Send binary file to storage.
+        """
+        storage.upload_fileobj(BytesIO(image), filename)
+
+app = falcon.API()
 
 
 resources = ImageDetectionResource()

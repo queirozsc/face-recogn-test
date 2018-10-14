@@ -2,11 +2,14 @@ version: '2'
 volumes:
   esdata2:
   kibana-plugins:
+  minio-data:
 
 services:
   face:
     image: face
     build: .
+    env_file:
+      - s3.env
     # --reload is usefull for dev purposes.
     command: ["gunicorn","--reload","-c","gunicorn.py","app_falcon:app"]
     environment:
@@ -22,7 +25,7 @@ services:
       driver: fluentd
       options:
         fluentd-address: "tcp://192.168.122.1:24224"
-        # fluentd-async-connect: "true"
+        fluentd-async-connect: "true"
         # As stated in https://docs.docker.com/config/containers/logging/log_tags/
         tag: "frecognition.{{.ImageName}}/{{.Name}}/{{.ID}}"
 
@@ -59,3 +62,16 @@ services:
      - 5601:5601
     volumes:
      - kibana-plugins:/usr/share/kibana/plugins
+
+  minio:
+    image: minio/minio
+    volumes:
+      - minio-data:/export
+    env_file:
+      - s3.env
+    ports:
+      - 9000:9000
+    environment:
+      MINIO_ACCESS_KEY: OTI14W1KOLISJCO3K61W
+      MINIO_SECRET_KEY: rSNqAavaAEHdOcZwjWNcStd8HJwIXh5KFBnW8Bcz
+    command: server /export

@@ -10,3 +10,4 @@ falcon-multipart
 gunicorn
 gevent
 json-logging-py
+boto3
