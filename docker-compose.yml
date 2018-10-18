@@ -3,6 +3,7 @@ volumes:
   esdata2:
   kibana-plugins:
   minio-data:
+  solr-data:
 
 services:
   face:
@@ -75,3 +76,14 @@ services:
       MINIO_ACCESS_KEY: OTI14W1KOLISJCO3K61W
       MINIO_SECRET_KEY: rSNqAavaAEHdOcZwjWNcStd8HJwIXh5KFBnW8Bcz
     command: server /export
+
+  solr:
+    image: solr:alpine
+    ports:
+     - "8983:8983"
+    volumes:
+      - solr-data:/opt/solr/server/solr/mycores
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - mycore
