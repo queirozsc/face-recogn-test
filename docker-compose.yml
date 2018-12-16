@@ -54,7 +54,8 @@ services:
       - esdata2:/usr/share/elasticsearch/data
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.4.2
+    image: kibana:presentation
+    build: kibana/
     restart: always
     networks:
      - default
