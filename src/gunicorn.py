@@ -17,10 +17,10 @@ pidfile = None
 umask = 0
 user = None
 group = None
-
-#logger_class = 'jsonlogging.JSONFormatter'
-tmp_upload_dir = None
-errorlog = '-'
-loglevel = 'info'
-#accesslog = '-'
-#access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
+#
+# # logger_class = 'jsonlogging.JSONFormatter'
+# tmp_upload_dir = None
+# errorlog = '-'
+# loglevel = 'info'
+# #accesslog = '-'
+# #access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'

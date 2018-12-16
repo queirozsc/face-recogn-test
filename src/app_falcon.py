@@ -40,8 +40,7 @@ def timeit(method):
             logs.update({'filename': request[0].media.get('filename', 'unknown')})
             logs.update({'client': request[0].media.get('client', 'unknown')})
 
-        data = json.dumps(logs)
-        logger.warning(data)
+        logger.info(logs)
         return result
 
     return timed

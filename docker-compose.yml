@@ -11,7 +11,8 @@ services:
     env_file:
       - s3.env
     # --reload is usefull for dev purposes.
-    command: ["gunicorn","--reload","-c","gunicorn.py","app_falcon:app"]
+#    command: ["gunicorn","--reload","-c","gunicorn.py","app_falcon:app"]
+    command: ["gunicorn","--reload","-c","gunicorn.py","app_falcon:app","--log-config","logging.conf"]
     environment:
      - SERVER_PORT:5000
     volumes:
